@@ -102,5 +102,9 @@ namespace IronPassword
         }
 
         #endregion
+
+        private void generatPasswordButton_Click(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }
