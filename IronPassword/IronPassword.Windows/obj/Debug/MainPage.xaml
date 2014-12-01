@@ -11,6 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Click="Button_Click" FontSize="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="200">GO</Button>
+        <Button x:ConnectionId='1'                      FontSize="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="200">GO</Button>
     </Grid>
 </Page>
+

@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Security.Cryptography;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -21,7 +23,7 @@ namespace IronPassword
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class AddPasswordPage : Page
+    public sealed partial class AddAccountPage : Page
     {
 
         private NavigationHelper navigationHelper;
@@ -45,7 +47,7 @@ namespace IronPassword
         }
 
 
-        public AddPasswordPage()
+        public AddAccountPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -103,8 +105,21 @@ namespace IronPassword
 
         #endregion
 
-        private void generatPasswordButton_Click(object sender, RoutedEventArgs e)
+        private void generatePasswordButton_Click(object sender, RoutedEventArgs e)
         {
+            // http://stackoverflow.com/questions/14582008/what-cryptographically-secure-options-are-there-for-creating-random-numbers-in-w
+            
+            uint length = 15;
+
+            IBuffer randomBuffer = CryptographicBuffer.GenerateRandom(length);
+            string randomString = CryptographicBuffer.EncodeToBase64String(randomBuffer);
+
+            passwordTextBox.Text = randomString;
+        }
+
+        private void addAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

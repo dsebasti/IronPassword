@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>JAKE-PC</Machine>
+    <WindowsUser>Jake</WindowsUser>
+    <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
+    <SolutionConfiguration>Debug|AnyCPU</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>a1656c2a-9494-4564-a76d-641a6925ccab</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\obj\Debug\</IntermediateOutputPath>
+    <RegisteredManifestChecksum>5851DDF07D8559E9F5F4207D0F38897C1CD60803FAD08FF1729DEEC58F483A05</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>a1656c2a-9494-4564-a76d-641a6925ccab_1.0.0.0_neutral__ny5wc5hp9gsbw</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>a1656c2a-9494-4564-a76d-641a6925ccab_ny5wc5hp9gsbw!App</RegisteredUserModeAppID>
+    <RegisteredPackageID>a1656c2a-9494-4564-a76d-641a6925ccab</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=Jake</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.0</RegisteredVersion>
+    <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\bin\Debug\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-12-01T06:24:42.869</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\bin\Debug\IronPassword.Windows.exe">
+      <PackagePath>IronPassword.Windows.exe</PackagePath>
+      <Modified>2014-12-01T06:28:39.844</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\Assets\Logo.scale-100.png">
+      <PackagePath>Assets\Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-03-13T02:06:34.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\Assets\SmallLogo.scale-100.png">
+      <PackagePath>Assets\SmallLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-03-13T02:06:34.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\Assets\SplashScreen.scale-100.png">
+      <PackagePath>Assets\SplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-03-13T02:06:34.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2014-03-13T02:06:34.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\bin\Debug\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+      <Modified>2014-12-01T06:24:24.144</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\bin\Debug\AddAccountPage.xbf">
+      <PackagePath>AddAccountPage.xbf</PackagePath>
+      <Modified>2014-12-01T06:28:39.583</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\bin\Debug\MainPage.xbf">
+      <PackagePath>MainPage.xbf</PackagePath>
+      <Modified>2014-12-01T06:28:39.586</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\bin\Debug\IronPassword.Windows.xr.xml">
+      <PackagePath>IronPassword.Windows.xr.xml</PackagePath>
+      <Modified>2014-12-01T06:24:23.818</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\bin\Debug\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2014-12-01T06:24:42.234</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>

@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
 
-  <Identity Name="0821a30b-9d20-4763-8b1c-ab6286d8b9a4"
+  <Identity Name="2c9f40bd-bc7c-495e-9a8d-29b8864bd9b2"
             Publisher="CN=Jake"
             Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="0821a30b-9d20-4763-8b1c-ab6286d8b9a4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="2c9f40bd-bc7c-495e-9a8d-29b8864bd9b2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>IronPassword.WindowsPhone</DisplayName>
