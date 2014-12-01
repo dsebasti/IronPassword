@@ -26,7 +26,7 @@
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\bin\Debug\IronPassword.Windows.exe">
       <PackagePath>IronPassword.Windows.exe</PackagePath>
-      <Modified>2014-12-01T06:28:39.844</Modified>
+      <Modified>2014-12-01T06:35:47.460</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Jake\Documents\Visual Studio 2013\Projects\IronPassword\IronPassword\IronPassword.Windows\Assets\Logo.scale-100.png">
       <PackagePath>Assets\Logo.scale-100.png</PackagePath>

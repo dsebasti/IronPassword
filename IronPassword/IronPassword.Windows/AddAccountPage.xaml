@@ -67,8 +67,8 @@
             <TextBlock Text="Username: " Grid.Row="2" FontSize="30" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
             <TextBlock Text="Password: " Grid.Row="3" FontSize="30" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
 
-            <TextBox PlaceholderText="Facebook/Twitter/Google/etc" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" FontSize="30" Margin="10,0,200,0"></TextBox>
-            <TextBox PlaceholderText=" " Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" FontSize="30" Margin="10,0,200,0"></TextBox>
+            <TextBox x:Name="serviceTextBox" PlaceholderText="Facebook/Twitter/Google/etc" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" FontSize="30" Margin="10,0,200,0"></TextBox>
+            <TextBox x:Name="usernameTextBox" PlaceholderText=" " Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" FontSize="30" Margin="10,0,200,0"></TextBox>
             <TextBox x:Name="passwordTextBox" PlaceholderText=" " Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" FontSize="30" Margin="10,0,200,0"></TextBox>
 
             <Button x:Name="generatePasswordButton" Grid.Column="1" Grid.Row="4" FontSize="30" 

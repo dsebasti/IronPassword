@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Security.Credentials;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
@@ -28,6 +29,8 @@ namespace IronPassword
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+
+        private PasswordVault vault;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -53,6 +56,7 @@ namespace IronPassword
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
             this.navigationHelper.SaveState += navigationHelper_SaveState;
+            vault = new PasswordVault();
         }
 
         /// <summary>
@@ -109,7 +113,7 @@ namespace IronPassword
         {
             // http://stackoverflow.com/questions/14582008/what-cryptographically-secure-options-are-there-for-creating-random-numbers-in-w
             
-            uint length = 15;
+            uint length = 12;
 
             IBuffer randomBuffer = CryptographicBuffer.GenerateRandom(length);
             string randomString = CryptographicBuffer.EncodeToBase64String(randomBuffer);
@@ -119,7 +123,13 @@ namespace IronPassword
 
         private void addAccountButton_Click(object sender, RoutedEventArgs e)
         {
+            PasswordCredential credentials = new PasswordCredential();
 
+            credentials.Resource = serviceTextBox.Text;
+            credentials.UserName = usernameTextBox.Text;
+            credentials.Password = passwordTextBox.Text;
+
+            vault.Add(credentials);
         }
     }
 }
