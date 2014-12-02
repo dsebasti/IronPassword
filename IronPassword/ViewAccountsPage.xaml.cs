@@ -1,13 +1,17 @@
 ﻿using IronPassword.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Security.Cryptography;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -28,6 +32,7 @@ namespace IronPassword
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private AccountManager manager;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -35,15 +40,6 @@ namespace IronPassword
         public ObservableDictionary DefaultViewModel
         {
             get { return this.defaultViewModel; }
-        }
-
-        /// <summary>
-        /// NavigationHelper is used on each page to aid in navigation and 
-        /// process lifetime management
-        /// </summary>
-        public NavigationHelper NavigationHelper
-        {
-            get { return this.navigationHelper; }
         }
 
         public ViewAccountsPage()
@@ -64,39 +60,33 @@ namespace IronPassword
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private async void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            if (e.PageState == null)
+            AccountManager manager = e.NavigationParameter as AccountManager;
+            if (manager == null)
             {
-                String password = Convert.ToString(e.NavigationParameter);
-                if (password == null)
+                if (e.PageState == null)
                 {
-                    this.Frame.Navigate(typeof(MainPage));
+                    this.Frame.GoBack();
                 }
-                else
-                {
-                    try
-                    {
-                        //TODO: Attempt to load password file. Redirect to main (login) page if invalid.
-                        StorageFile passwordFile = await ApplicationData.Current.RoamingFolder.GetFileAsync("passwords.json");
-                        JsonObject fileObject = JsonValue.Parse(await FileIO.ReadTextAsync(passwordFile)).GetObject();
-                        JsonArray accountsArray = fileObject.GetNamedArray("accounts");
-                        for (uint i = 0; i < accountsArray.Count(); i++)
-                        {
-                            String serializedAccount = accountsArray.GetStringAt(i);
-                            Account account = Account.Deserialize(serializedAccount);
-                            e.PageState.Add(account.Resource, account);
-                        }
-                    }
-                    catch (IOException)
-                    {
-                        this.Frame.Navigate(typeof(MainPage));
-                    }
-                }
+            }
+            else
+            {
+                this.manager = manager;
+                this.itemGridView.ItemsSource = manager.Accounts;
             }
         }
 
         #region NavigationHelper registration
+
+        /// <summary>
+        /// NavigationHelper is used on each page to aid in navigation and 
+        /// process lifetime management
+        /// </summary>
+        public NavigationHelper NavigationHelper
+        {
+            get { return this.navigationHelper; }
+        }
 
         /// The methods provided in this section are simply used to allow
         /// NavigationHelper to respond to the page's navigation methods.
@@ -118,6 +108,26 @@ namespace IronPassword
         }
 
         #endregion
+
+        private void AddItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(AddAccountPage), manager);
+        }
+
+        private async void pageRoot_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (manager != null)
+            {
+                StorageFile accountFile = await ApplicationData.Current.RoamingFolder
+                    .CreateFileAsync("passwords.json", CreationCollisionOption.ReplaceExisting);
+                manager.WriteToFile(accountFile);
+            }
+        }
+
+        private void AccountItem_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Debug.WriteLine(manager.Accounts[0].Resource);
+        }
 
     }
 }

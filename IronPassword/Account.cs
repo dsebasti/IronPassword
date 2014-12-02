@@ -8,9 +8,9 @@ namespace IronPassword
 {
     class Account
     {
-        public String Resource { get; private set; }
-        public String Username { get; private set; }
-        public String Password { get; private set; }
+        public String Resource { get; set; }
+        public String Username { get; set; }
+        public String Password { get; set; }
 
         public DateTime CreationTime { get; private set; }
 

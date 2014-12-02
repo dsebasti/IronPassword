@@ -8,7 +8,7 @@
     xmlns:common="using:IronPassword.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d" Unloaded="pageRoot_Unloaded">
 
     <Page.Resources>
         <!-- Collection of items displayed by this page -->
@@ -18,10 +18,6 @@
 
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">My Application</x:String>
-        
-        <DataTemplate x:Key="AccountTemplate">
-            
-        </DataTemplate>
     </Page.Resources>
 
     <!--
@@ -52,12 +48,17 @@
             IsSwipeEnabled="false">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Content}" FontSize="40">
-                        
-                    </TextBlock>
+                    <StackPanel Width="200" Height="100" Tapped="AccountItem_Tapped" Background="#33FFFFFF">
+                        <TextBlock Text="{Binding Resource}" FontSize="40" Margin="8"/>
+                        <TextBlock Text="{Binding CreationTime}" Foreground="#FFAAAAAA" FontStyle="Italic" Margin="20,0,0,0" />
+                    </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
-            <GridViewItem Content="Add..." />
+            <ListBox Height="100" Width="120">
+                <ListBoxItem Content="Service Name"/>
+                <ListBoxItem Content="Newest First"/>
+                <ListBoxItem Content="Oldest First"/>
+            </ListBox>
         </GridView>
 
         <!-- Back button and page title -->
@@ -67,7 +68,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="pageTitle" Text="Accounts" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40" />
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,1011,40" />
+
+            <Button x:Name="AddItem" Content="Add New..." Tapped="AddItem_Tapped" Grid.Column="1" Margin="400,57,746,37" Height="46" HorizontalAlignment="Stretch" />
         </Grid>
     </Grid>
 </Page>
