@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,14 +24,31 @@ namespace IronPassword
     /// </summary>
     public sealed partial class MainPage : Page
     {
+
+
         public MainPage()
         {
             this.InitializeComponent();
+            CheckPasswordFile();
+        }
+
+        private async void CheckPasswordFile()
+        {
+            StorageFile result = null;
+            try
+            {
+                result = await ApplicationData.Current.RoamingFolder.GetFileAsync("passwords.json");
+            }
+            catch (FileNotFoundException) {}
+            if (result == null)
+            {
+                this.Frame.Navigate(typeof(CreateMasterPasswordPage));
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(AddAccountPage));
+            this.Frame.Navigate(typeof(ViewAccountsPage), passwordBox.Password);
         }
     }
 }

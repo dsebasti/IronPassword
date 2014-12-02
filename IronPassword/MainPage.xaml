@@ -11,6 +11,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Click="Button_Click" FontSize="30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="200">GO</Button>
+        <Button Click="Button_Click" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,128,0,0">GO</Button>
+        <PasswordBox x:Name="passwordBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500"/>
+        <TextBlock HorizontalAlignment="Center"  TextWrapping="Wrap" Text="Master Password:" VerticalAlignment="Center" FontSize="32" Margin="0,0,0,128"/>
     </Grid>
 </Page>
