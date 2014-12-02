@@ -87,7 +87,6 @@ namespace IronPassword
                             Account account = Account.Deserialize(serializedAccount);
                             e.PageState.Add(account.Resource, account);
                         }
-                        e.PageState.Add("Add...", null);
                     }
                     catch (IOException)
                     {
