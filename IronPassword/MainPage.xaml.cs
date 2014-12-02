@@ -29,26 +29,26 @@ namespace IronPassword
         public MainPage()
         {
             this.InitializeComponent();
-            CheckPasswordFile();
         }
 
-        private async void CheckPasswordFile()
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ViewAccountsPage), passwordBox.Password);
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             StorageFile result = null;
             try
             {
                 result = await ApplicationData.Current.RoamingFolder.GetFileAsync("passwords.json");
             }
-            catch (FileNotFoundException) {}
+            catch (FileNotFoundException) { }
+
             if (result == null)
             {
                 this.Frame.Navigate(typeof(CreateMasterPasswordPage));
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(ViewAccountsPage), passwordBox.Password);
         }
     }
 }
