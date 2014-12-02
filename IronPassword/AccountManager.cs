@@ -53,7 +53,7 @@ namespace IronPassword
             {
                 String serializedAccount = Accounts[i].Serialize();
                 IBuffer encodedAccount = CryptographicBuffer.ConvertStringToBinary(serializedAccount, BinaryStringEncoding.Utf8);
-                IBuffer encryptedAccount = Crypto.encrypt(password, initVector, encodedAccount);
+                IBuffer encryptedAccount = Crypto.EncryptAsync(password, initVector, encodedAccount);
                 String base64Account = CryptographicBuffer.EncodeToBase64String(encryptedAccount);
                 accountsArray.Add(JsonValue.CreateStringValue(base64Account));
             }

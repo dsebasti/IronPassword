@@ -5,45 +5,68 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
+using Windows.Security.Cryptography.DataProtection;
 using Windows.Storage.Streams;
 
 namespace IronPassword
 {
-    class Crypto
+    public static class Crypto
     {
-        private static IBuffer salt = CryptographicBuffer.ConvertStringToBinary(")GS78g-897g3SP-98whiof", BinaryStringEncoding.Utf8);
-        private static uint iterations = 50000;
-        private static uint keyLength = 64;
+        //private static IBuffer salt = CryptographicBuffer.ConvertStringToBinary(")GS78g-897g3SP-98whiof", BinaryStringEncoding.Utf8);
+        //private static uint iterations = 50000;
+        //private static uint keyLength = 64;
 
-        private static SymmetricKeyAlgorithmProvider keyProvider = SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithmNames.AesCbcPkcs7);
-        private static KeyDerivationParameters keyParams = KeyDerivationParameters.BuildForPbkdf2(salt, iterations);
+        //private static SymmetricKeyAlgorithmProvider keyProvider = SymmetricKeyAlgorithmProvider.OpenAlgorithm(SymmetricAlgorithmNames.AesCbcPkcs7);
+        //private static KeyDerivationParameters keyParams = KeyDerivationParameters.BuildForPbkdf2(salt, iterations);
 
-        public static IBuffer getInitVector()
+        //public static IBuffer getInitVector()
+        //{
+        //    return CryptographicBuffer.GenerateRandom(keyProvider.BlockLength);
+        //}
+
+        //public static IBuffer encrypt(String password, IBuffer initVector, IBuffer plaintext)
+        //{
+        //    CryptographicKey key = buildKey(password);
+        //    return CryptographicEngine.Encrypt(key, plaintext, initVector);
+        //}
+
+        //public static IBuffer decrypt(String password, IBuffer initVector, IBuffer cyphertext)
+        //{
+        //    CryptographicKey key = buildKey(password);
+        //    return CryptographicEngine.Decrypt(key, cyphertext, initVector);
+        //}
+
+        //private static CryptographicKey buildKey(String password)
+        //{
+        //    IBuffer secret = CryptographicBuffer.ConvertStringToBinary(password, BinaryStringEncoding.Utf8);
+        //    CryptographicKey initKey = keyProvider.CreateSymmetricKey(secret);
+        //    IBuffer keyMaterial = CryptographicEngine.DeriveKeyMaterial(
+        //         initKey,
+        //         keyParams,
+        //         keyLength);
+        //    return keyProvider.CreateSymmetricKey(keyMaterial);
+        //}
+
+        public async static Task<string> EncryptAsync(string text)
         {
-            return CryptographicBuffer.GenerateRandom(keyProvider.BlockLength);
+            DataProtectionProvider provider = new DataProtectionProvider("LOCAL=user");
+
+            IBuffer message = CryptographicBuffer.ConvertStringToBinary(text, BinaryStringEncoding.Utf8);
+            IBuffer encrypted = await provider.ProtectAsync(message);
+
+            string result = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, encrypted);
+            return result;
         }
 
-        public static IBuffer encrypt(String password, IBuffer initVector, IBuffer plaintext)
+        public async static Task<string> DecryptAsync(string text)
         {
-            CryptographicKey key = buildKey(password);
-            return CryptographicEngine.Encrypt(key, plaintext, initVector);
-        }
+            DataProtectionProvider provider = new DataProtectionProvider();
 
-        public static IBuffer decrypt(String password, IBuffer initVector, IBuffer cyphertext)
-        {
-            CryptographicKey key = buildKey(password);
-            return CryptographicEngine.Decrypt(key, cyphertext, initVector);
-        }
+            IBuffer encrypted = CryptographicBuffer.ConvertStringToBinary(text, BinaryStringEncoding.Utf8);
+            IBuffer message = await provider.UnprotectAsync(encrypted);
 
-        private static CryptographicKey buildKey(String password)
-        {
-            IBuffer secret = CryptographicBuffer.ConvertStringToBinary(password, BinaryStringEncoding.Utf8);
-            CryptographicKey initKey = keyProvider.CreateSymmetricKey(secret);
-            IBuffer keyMaterial = CryptographicEngine.DeriveKeyMaterial(
-                 initKey,
-                 keyParams,
-                 keyLength);
-            return keyProvider.CreateSymmetricKey(keyMaterial);
+            string result = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, message);
+            return result;
         }
     }
 }

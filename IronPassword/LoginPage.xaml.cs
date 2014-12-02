@@ -30,9 +30,9 @@ namespace IronPassword
             StorageFile result = null;
             try
             {
-                result = await ApplicationData.Current.RoamingFolder.GetFileAsync("passwords.json");
+                result = await ApplicationData.Current.RoamingFolder.GetFileAsync(PasswordSafe.PasswordFile);
             }
-            catch (FileNotFoundException) { }
+            catch (FileNotFoundException) {}
 
             if (result == null)
             {

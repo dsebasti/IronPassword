@@ -11,6 +11,7 @@ using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -114,17 +115,31 @@ namespace IronPassword
         {
             if (!password1.Password.Equals(password2.Password))
             {
-                //The user's password did not match the 'repeat' challenge.
+                MessageDialog msg = new MessageDialog("Try Again", "The passwords do not match. Please try again.");
+                await msg.ShowAsync();
             }
             else
             {
                 //TODO: Create an empty password file.
-                StorageFile passwordFile = await ApplicationData.Current.RoamingFolder.CreateFileAsync("passwords.json");
-                JsonObject fileObject = new JsonObject();
-                fileObject["initVector"] = JsonValue.CreateStringValue(CryptographicBuffer.EncodeToBase64String(Crypto.getInitVector()));
-                fileObject["accounts"] = new JsonArray();
-                await FileIO.WriteTextAsync(passwordFile, fileObject.Stringify());
-                this.Frame.Navigate(typeof(ViewAccountsPage), password1.Password);
+                //StorageFile passwordFile = await ApplicationData.Current.RoamingFolder.CreateFileAsync("passwords.json");
+                //JsonObject fileObject = new JsonObject();
+                //fileObject["initVector"] = JsonValue.CreateStringValue(CryptographicBuffer.EncodeToBase64String(Crypto.getInitVector()));
+                //fileObject["accounts"] = new JsonArray();
+                //await FileIO.WriteTextAsync(passwordFile, fileObject.Stringify());
+                //this.Frame.Navigate(typeof(ViewAccountsPage), password1.Password);
+
+                StorageFile passwordFile = await ApplicationData.Current.RoamingFolder.CreateFileAsync(PasswordSafe.PasswordFile);
+
+                JsonObject json = new JsonObject();
+                json["master"] = JsonValue.CreateStringValue(password1.Password);
+                json["accounts"] = new JsonArray();
+
+                string jsonText = json.Stringify();
+                string encryptedText = await Crypto.EncryptAsync(jsonText);
+
+                await FileIO.WriteTextAsync(passwordFile, encryptedText);
+
+                this.Frame.Navigate(typeof(LoginPage));
             }
         }
     }
