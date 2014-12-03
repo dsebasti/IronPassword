@@ -4,13 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.Core;
 using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -27,7 +23,7 @@ namespace IronPassword
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class CreateMasterPasswordPage : Page
+    public sealed partial class MainPage : Page
     {
 
         private NavigationHelper navigationHelper;
@@ -51,7 +47,7 @@ namespace IronPassword
         }
 
 
-        public CreateMasterPasswordPage()
+        public MainPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -100,29 +96,44 @@ namespace IronPassword
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedTo(e);
-            base.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             navigationHelper.OnNavigatedFrom(e);
-            base.OnNavigatedFrom(e);
         }
 
         #endregion
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private async void loginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!password1.Password.Equals(password2.Password))
+            if (masterPasswordBox.Password == AccountManager.safe.Password)
             {
-                MessageDialog msg = new MessageDialog("Try Again", "The passwords do not match. Please try again.");
-                await msg.ShowAsync();
+                this.Frame.Navigate(typeof(ViewAccountsPage));
             }
             else
             {
-                PasswordSafe.initializePasswordFile(password1.Password);
+                MessageDialog msg = new MessageDialog("Try Again", "You entered the wrong password.");
+                await msg.ShowAsync();
+            }
+        }
 
-                this.Frame.Navigate(typeof(MainPage));
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            StorageFile result = null;
+            try
+            {
+                result = await ApplicationData.Current.RoamingFolder.GetFileAsync(PasswordSafe.PasswordFile);
+            }
+            catch (FileNotFoundException) { }
+
+            if (result == null)
+            {
+                this.Frame.Navigate(typeof(CreateMasterPasswordPage));
+            }
+            else
+            {
+                AccountManager.initializeSafe();
             }
         }
     }
