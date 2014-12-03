@@ -19,21 +19,15 @@ namespace IronPassword
 
         public PasswordSafe()
         {
-            getStorageFile();
-            decryptStorageFile();   
+            getStorageFile();   
         }
 
         private async void getStorageFile()
         {
             file = await ApplicationData.Current.RoamingFolder.GetFileAsync(PasswordFile);
-        }
+            string text = await FileIO.ReadTextAsync(file);
 
-        private async void decryptStorageFile()
-        {
-            string encrypted = await FileIO.ReadTextAsync(file);
-            string decrypted = await Crypto.DecryptAsync(encrypted);
-
-            json = JsonValue.Parse(decrypted);
+            json = JsonValue.Parse(text);
             Password = json.GetObject().GetNamedString("master");
         }
 
@@ -46,12 +40,11 @@ namespace IronPassword
             json["accounts"] = new JsonArray();
 
             string jsonText = json.Stringify();
-            string encryptedText = await Crypto.EncryptAsync(jsonText);
 
             try
             {
                 if(passwordFile != null)
-                    await FileIO.WriteTextAsync(passwordFile, encryptedText, Windows.Storage.Streams.UnicodeEncoding.Utf16LE);
+                    await FileIO.WriteTextAsync(passwordFile, jsonText);
             }
             catch (FileNotFoundException) { }
         }
@@ -61,7 +54,7 @@ namespace IronPassword
             JsonArray jsonArray = json.GetObject().GetNamedArray("accounts");
             uint size = (uint)jsonArray.Count;
 
-            double nextID = jsonArray.GetNumberAt(size - 1);
+            double nextID = jsonArray.GetNumberAt(size - 1) + 1;
 
             return (int)nextID;
         }
@@ -74,16 +67,18 @@ namespace IronPassword
             jsonObject["username"] = JsonValue.CreateStringValue(account.Username);
             jsonObject["password"] = JsonValue.CreateStringValue(account.Password);
 
+            string datetime = Convert.ToString(account.CreationTime);
+            jsonObject["datetime"] = JsonValue.CreateStringValue(datetime);
+
             JsonArray jsonArray = json.GetObject().GetNamedArray("accounts");
             jsonArray.Add(jsonObject);
 
             string text = json.Stringify();
-            string encryptedText = await Crypto.EncryptAsync(text);
 
             try
             {
                 if (file != null)
-                    await FileIO.WriteTextAsync(file, encryptedText, Windows.Storage.Streams.UnicodeEncoding.Utf16LE);
+                    await FileIO.WriteTextAsync(file, text);
             }
             catch (FileNotFoundException) { }
         }

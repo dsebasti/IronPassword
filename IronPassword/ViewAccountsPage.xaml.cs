@@ -75,6 +75,27 @@ namespace IronPassword
             //    this.manager = manager;
             //    this.itemGridView.ItemsSource = manager.Accounts;
             //}
+
+            JsonArray jsonArray = AccountManager.safe.json.GetObject().GetNamedArray("accounts");
+
+            for (uint i = 0; i < jsonArray.Count; i++)
+            {
+                JsonObject jsonObject = jsonArray.GetObjectAt(i);
+
+                Account account = new Account();
+                account.ID = (int)jsonObject.GetNamedNumber("id");
+                account.AccountName = jsonObject.GetNamedString("name");
+                account.Username = jsonObject.GetNamedString("username");
+                account.Password = jsonObject.GetNamedString("password");
+
+                string datetime = jsonObject.GetNamedString("datetime");
+                account.CreationTime = Convert.ToDateTime(datetime);
+
+                AccountManager.Accounts.Add(account);
+            }
+
+            this.itemGridView.ItemsSource = AccountManager.Accounts;
+            this.itemGridView.InvalidateArrange();
         }
 
         #region NavigationHelper registration
@@ -126,7 +147,7 @@ namespace IronPassword
 
         private void pageRoot_Loaded(object sender, RoutedEventArgs e)
         {
-            this.itemGridView.ItemsSource = AccountManager.Accounts;
+           
         }
     }
 }

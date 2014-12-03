@@ -161,6 +161,7 @@ namespace IronPassword
                 AccountManager.Accounts.Add(account);
                 AccountManager.safe.AddAccount(account);
 
+                this.Frame.Navigate(typeof(ViewAccountsPage));
             }
             else
             {
