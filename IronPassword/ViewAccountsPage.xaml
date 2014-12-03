@@ -40,15 +40,12 @@
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Width="200" Height="100" Tapped="AccountItem_Tapped" Background="#33FFFFFF">
-                        <TextBlock Text="{Binding Path=AccountManager.Accounts.AccountName}" FontSize="40" Margin="8"/>
+                        <TextBlock Text="" FontSize="40" Margin="8"/>
                         <TextBlock Text="Time" Foreground="#FFAAAAAA" FontStyle="Italic" Margin="20,0,0,0" />
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
             <ListBox Height="100" Width="120">
-                <ListBoxItem Content="Service Name"/>
-                <ListBoxItem Content="Newest First"/>
-                <ListBoxItem Content="Oldest First"/>
             </ListBox>
         </GridView>
 
