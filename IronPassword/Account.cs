@@ -12,8 +12,8 @@ namespace IronPassword
         public string Username { get; set; }
         public string Password { get; set; }
 
-        public DateTime CreationTime { get; private set; }
-        public int ID { get; private set; }
+        public DateTime CreationTime { get; set; }
+        public int ID { get; set; }
 
         public Account()
         {
