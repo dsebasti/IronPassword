@@ -47,6 +47,7 @@ namespace IronPassword
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += navigationHelper_LoadState;
+            itemGridView.ItemsSource = AccountManager.Accounts;
         }
 
         /// <summary>
@@ -112,16 +113,6 @@ namespace IronPassword
         private void AddItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(AddAccountPage));
-        }
-
-        private async void pageRoot_Unloaded(object sender, RoutedEventArgs e)
-        {
-            //if (manager != null)
-            //{
-            //    StorageFile accountFile = await ApplicationData.Current.RoamingFolder
-            //        .CreateFileAsync("passwords.json", CreationCollisionOption.ReplaceExisting);
-            //    manager.WriteToFile(accountFile);
-            //}
         }
 
         private void AccountItem_Tapped(object sender, TappedRoutedEventArgs e)

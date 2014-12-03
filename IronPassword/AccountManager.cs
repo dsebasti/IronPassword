@@ -13,10 +13,22 @@ namespace IronPassword
     public static class AccountManager
     {
         public static PasswordSafe safe;
+        public static List<Account> Accounts = new List<Account>();
+        public static int NextID;
 
         public static void initializeSafe()
         {
             safe = new PasswordSafe();
+
+            if(Accounts.Count == 0)
+            {
+                NextID = 0;
+            }
+            else
+            {
+                NextID = safe.getNextID();
+            }
+           
         }
 
         //private String password;

@@ -6,38 +6,28 @@ using System.Threading.Tasks;
 
 namespace IronPassword
 {
-    class Account
+    public class Account
     {
-        public String Resource { get; set; }
-        public String Username { get; set; }
-        public String Password { get; set; }
+        public string AccountName { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
 
         public DateTime CreationTime { get; private set; }
+        public int ID { get; private set; }
 
-        public Account(String resource, String username, String password)
+        public Account()
         {
-            this.Resource = resource;
-            this.Username = username;
-            this.Password = password;
             this.CreationTime = DateTime.Now;
-        }
+            this.ID = AccountManager.NextID;
 
-        private Account(String resource, String username, String password, DateTime creationTime)
-        {
-            this.Resource = resource;
-            this.Username = username;
-            this.Password = password;
-            this.CreationTime = creationTime;
-        }
-
-        public static Account Deserialize(String data) {
-            String[] fields = data.Split('\n');
-            return new Account(fields[0], fields[1], fields[2], Convert.ToDateTime(fields[3]));
-        }
-
-        public String Serialize()
-        {
-            return Resource + "\n" + Username + "\n" + Password + "\n" + Convert.ToString(CreationTime);
+            if(AccountManager.Accounts.Count == 0)
+            {
+                this.ID = 1;
+            }
+            else
+            {
+                this.ID = AccountManager.NextID;
+            }
         }
     }
 }

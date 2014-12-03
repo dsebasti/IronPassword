@@ -55,5 +55,37 @@ namespace IronPassword
             }
             catch (FileNotFoundException) { }
         }
+
+        public int getNextID()
+        {
+            JsonArray jsonArray = json.GetObject().GetNamedArray("accounts");
+            uint size = (uint)jsonArray.Count;
+
+            double nextID = jsonArray.GetNumberAt(size - 1);
+
+            return (int)nextID;
+        }
+
+        public async void AddAccount(Account account)
+        {
+            JsonObject jsonObject = new JsonObject();
+            jsonObject["id"] = JsonValue.CreateNumberValue(account.ID);
+            jsonObject["name"] = JsonValue.CreateStringValue(account.AccountName);
+            jsonObject["username"] = JsonValue.CreateStringValue(account.Username);
+            jsonObject["password"] = JsonValue.CreateStringValue(account.Password);
+
+            JsonArray jsonArray = json.GetObject().GetNamedArray("accounts");
+            jsonArray.Add(jsonObject);
+
+            string text = json.Stringify();
+            string encryptedText = await Crypto.EncryptAsync(text);
+
+            try
+            {
+                if (file != null)
+                    await FileIO.WriteTextAsync(file, encryptedText, Windows.Storage.Streams.UnicodeEncoding.Utf16LE);
+            }
+            catch (FileNotFoundException) { }
+        }
     }
 }

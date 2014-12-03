@@ -8,14 +8,7 @@
     xmlns:common="using:IronPassword.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Unloaded="pageRoot_Unloaded">
-
-    <Page.Resources>
-        <!-- Collection of items displayed by this page -->
-        <CollectionViewSource
-        x:Name="itemsViewSource"
-        Source="{Binding Items}"/>
-    </Page.Resources>
+    mc:Ignorable="d">
 
     <!--
         This grid acts as a root panel for the page that defines two rows:
@@ -32,6 +25,7 @@
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+       
 
         <!-- Horizontal scrolling grid -->
         <GridView
@@ -39,15 +33,15 @@
             AutomationProperties.AutomationId="ItemsGridView"
             AutomationProperties.Name="Items"
             TabIndex="1"
-            Grid.RowSpan="2"
-            Padding="116,136,116,46"
+            Grid.Row="1"
+            Padding="10,10,10,10"
             SelectionMode="None"
             IsSwipeEnabled="false">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Width="200" Height="100" Tapped="AccountItem_Tapped" Background="#33FFFFFF">
-                        <TextBlock Text="{Binding Resource}" FontSize="40" Margin="8"/>
-                        <TextBlock Text="{Binding CreationTime}" Foreground="#FFAAAAAA" FontStyle="Italic" Margin="20,0,0,0" />
+                        <TextBlock Text="{Binding Path=AccountManager.Accounts.AccountName}" FontSize="40" Margin="8"/>
+                        <TextBlock Text="Time" Foreground="#FFAAAAAA" FontStyle="Italic" Margin="20,0,0,0" />
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
@@ -64,8 +58,8 @@
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock x:Name="pageTitle" Text="Accounts" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
-                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,1011,40" />
+            <TextBlock x:Name="pageTitle" Text="{StaticResource AppName}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
 
             <Button x:Name="AddItem" Content="Add New..." Tapped="AddItem_Tapped" Grid.Column="1" Margin="400,57,746,37" Height="46" HorizontalAlignment="Stretch" />
         </Grid>

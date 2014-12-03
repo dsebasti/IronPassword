@@ -153,7 +153,14 @@ namespace IronPassword
 
             if (passwordScore >= (int)PasswordScore.Medium)
             {
-                account = new Account(serviceTextBox.Text, usernameTextBox.Text, passwordTextBox.Text);
+                account = new Account();
+                account.AccountName = serviceTextBox.Text;
+                account.Username = usernameTextBox.Text;
+                account.Password = passwordTextBox.Text;
+
+                AccountManager.Accounts.Add(account);
+                AccountManager.safe.AddAccount(account);
+
             }
             else
             {
