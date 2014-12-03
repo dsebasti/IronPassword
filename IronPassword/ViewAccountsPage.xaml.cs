@@ -111,7 +111,7 @@ namespace IronPassword
 
         private void AddItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(AddAccountPage), manager);
+            this.Frame.Navigate(typeof(AddAccountPage));
         }
 
         private async void pageRoot_Unloaded(object sender, RoutedEventArgs e)

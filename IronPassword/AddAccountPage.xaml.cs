@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Security.Credentials;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -24,8 +26,24 @@ namespace IronPassword
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
+    /// 
+
+    // Password Strength Test
+    // https://social.msdn.microsoft.com/Forums/vstudio/en-US/5e3f27d2-49af-410a-85a2-3c47e3f77fb1/how-to-check-for-password-strength?forum=csharpgeneral
+
     public sealed partial class AddAccountPage : Page
     {
+        public enum PasswordScore
+        {
+            Blank = 0,
+            VeryWeak = 1,
+            Weak = 2,
+            Medium = 3,
+            Strong = 4,
+            VeryStrong = 5
+        }
+
+        private int passwordScore;
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -129,13 +147,47 @@ namespace IronPassword
             passwordTextBox.Text = randomString;
         }
 
-        private void addAccountButton_Click(object sender, RoutedEventArgs e)
+        private async void addAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            Account account = new Account(serviceTextBox.Text, usernameTextBox.Text, passwordTextBox.Text);
+            Account account;
 
-            //manager.Accounts.Add(account);
+            if (passwordScore >= (int)PasswordScore.Medium)
+            {
+                account = new Account(serviceTextBox.Text, usernameTextBox.Text, passwordTextBox.Text);
+            }
+            else
+            {
+                MessageDialog msg = new MessageDialog("Weak Password", "Please use a stronger password.");
+                await msg.ShowAsync();
+            }
+        }
 
-            //this.Frame.Navigate(typeof(ViewAccountsPage), manager);
+        private void passwordTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            int score = 1;
+
+            string password = passwordTextBox.Text;
+
+            if (password.Length >= 8)
+                score++;
+            if (password.Length >= 12)
+                score++;
+            if (Regex.Match(password, @"[0-9]+(\.[0-9][0-9]?)?", RegexOptions.ECMAScript).Success)
+                score++;
+            if (Regex.Match(password, @"^(?=.*[a-z])(?=.*[A-Z]).+$", RegexOptions.ECMAScript).Success &&
+              Regex.Match(password, @"/[A-Z]/", RegexOptions.ECMAScript).Success)
+                score++;
+            if (Regex.Match(password, @"[!,@,#,$,%,^,&,*,?,_,~,-,£,(,)]", RegexOptions.ECMAScript).Success)
+                score++;
+
+            if (score <= (int)PasswordScore.Weak)
+                passwordTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Red);
+            if (score == (int)PasswordScore.Medium)
+                passwordTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
+            if (score >= (int)PasswordScore.Strong)
+                passwordTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Green);
+
+            passwordScore = score;
         }
     }
 }
