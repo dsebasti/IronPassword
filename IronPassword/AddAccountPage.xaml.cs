@@ -30,7 +30,7 @@ namespace IronPassword
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        private AccountManager manager;
+        //private AccountManager manager;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -71,15 +71,15 @@ namespace IronPassword
         /// session. The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            AccountManager manager = e.NavigationParameter as AccountManager;
-            if (manager == null)
-            {
-                this.Frame.GoBack();
-            }
-            else
-            {
-                this.manager = manager;
-            }
+            //AccountManager manager = e.NavigationParameter as AccountManager;
+            //if (manager == null)
+            //{
+            //    this.Frame.GoBack();
+            //}
+            //else
+            //{
+            //    this.manager = manager;
+            //}
         }
 
         /// <summary>
@@ -133,9 +133,9 @@ namespace IronPassword
         {
             Account account = new Account(serviceTextBox.Text, usernameTextBox.Text, passwordTextBox.Text);
 
-            manager.Accounts.Add(account);
+            //manager.Accounts.Add(account);
 
-            this.Frame.Navigate(typeof(ViewAccountsPage), manager);
+            //this.Frame.Navigate(typeof(ViewAccountsPage), manager);
         }
     }
 }

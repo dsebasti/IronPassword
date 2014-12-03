@@ -32,7 +32,7 @@ namespace IronPassword
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private AccountManager manager;
+        //private AccountManager manager;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -62,19 +62,19 @@ namespace IronPassword
         /// session.  The state will be null the first time a page is visited.</param>
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            AccountManager manager = e.NavigationParameter as AccountManager;
-            if (manager == null)
-            {
-                if (e.PageState == null)
-                {
-                    this.Frame.GoBack();
-                }
-            }
-            else
-            {
-                this.manager = manager;
-                this.itemGridView.ItemsSource = manager.Accounts;
-            }
+            //AccountManager manager = e.NavigationParameter as AccountManager;
+            //if (manager == null)
+            //{
+            //    if (e.PageState == null)
+            //    {
+            //        this.Frame.GoBack();
+            //    }
+            //}
+            //else
+            //{
+            //    this.manager = manager;
+            //    this.itemGridView.ItemsSource = manager.Accounts;
+            //}
         }
 
         #region NavigationHelper registration
@@ -111,22 +111,22 @@ namespace IronPassword
 
         private void AddItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(AddAccountPage), manager);
+            //this.Frame.Navigate(typeof(AddAccountPage), manager);
         }
 
         private async void pageRoot_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (manager != null)
-            {
-                StorageFile accountFile = await ApplicationData.Current.RoamingFolder
-                    .CreateFileAsync("passwords.json", CreationCollisionOption.ReplaceExisting);
-                manager.WriteToFile(accountFile);
-            }
+            //if (manager != null)
+            //{
+            //    StorageFile accountFile = await ApplicationData.Current.RoamingFolder
+            //        .CreateFileAsync("passwords.json", CreationCollisionOption.ReplaceExisting);
+            //    manager.WriteToFile(accountFile);
+            //}
         }
 
         private void AccountItem_Tapped(object sender, TappedRoutedEventArgs e)
         {
-            Debug.WriteLine(manager.Accounts[0].Resource);
+            //Debug.WriteLine(manager.Accounts[0].Resource);
         }
 
     }

@@ -51,10 +51,10 @@ namespace IronPassword
         {
             DataProtectionProvider provider = new DataProtectionProvider("LOCAL=user");
 
-            IBuffer message = CryptographicBuffer.ConvertStringToBinary(text, BinaryStringEncoding.Utf8);
+            IBuffer message = CryptographicBuffer.ConvertStringToBinary(text, BinaryStringEncoding.Utf16LE);
             IBuffer encrypted = await provider.ProtectAsync(message);
 
-            string result = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, encrypted);
+            string result = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf16LE, encrypted);
             return result;
         }
 
@@ -62,10 +62,10 @@ namespace IronPassword
         {
             DataProtectionProvider provider = new DataProtectionProvider();
 
-            IBuffer encrypted = CryptographicBuffer.ConvertStringToBinary(text, BinaryStringEncoding.Utf8);
+            IBuffer encrypted = CryptographicBuffer.ConvertStringToBinary(text, BinaryStringEncoding.Utf16LE);
             IBuffer message = await provider.UnprotectAsync(encrypted);
 
-            string result = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf8, message);
+            string result = CryptographicBuffer.ConvertBinaryToString(BinaryStringEncoding.Utf16LE, message);
             return result;
         }
     }

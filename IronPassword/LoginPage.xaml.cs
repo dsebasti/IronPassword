@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -13,16 +14,25 @@ namespace IronPassword
     /// </summary>
     public sealed partial class LoginPage : Page
     {
-
         public LoginPage()
         {
             this.InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            AccountManager accounts = new AccountManager(passwordBox.Password);
-            this.Frame.Navigate(typeof(ViewAccountsPage), accounts);
+            //AccountManager accounts = new AccountManager(passwordBox.Password);
+            //this.Frame.Navigate(typeof(ViewAccountsPage));
+
+            if(passwordBox.Password == AccountManager.safe.Password)
+            {
+                this.Frame.Navigate(typeof(ViewAccountsPage));
+            }
+            else
+            {
+                MessageDialog msg = new MessageDialog("Try Again", "You entered the wrong password.");
+                await msg.ShowAsync();
+            }
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
@@ -37,6 +47,10 @@ namespace IronPassword
             if (result == null)
             {
                 this.Frame.Navigate(typeof(CreateMasterPasswordPage));
+            }
+            else
+            {
+                AccountManager.initializeSafe();
             }
         }
     }

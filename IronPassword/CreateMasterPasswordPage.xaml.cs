@@ -128,16 +128,7 @@ namespace IronPassword
                 //await FileIO.WriteTextAsync(passwordFile, fileObject.Stringify());
                 //this.Frame.Navigate(typeof(ViewAccountsPage), password1.Password);
 
-                StorageFile passwordFile = await ApplicationData.Current.RoamingFolder.CreateFileAsync(PasswordSafe.PasswordFile);
-
-                JsonObject json = new JsonObject();
-                json["master"] = JsonValue.CreateStringValue(password1.Password);
-                json["accounts"] = new JsonArray();
-
-                string jsonText = json.Stringify();
-                string encryptedText = await Crypto.EncryptAsync(jsonText);
-
-                await FileIO.WriteTextAsync(passwordFile, encryptedText);
+                PasswordSafe.initializePasswordFile(password1.Password);
 
                 this.Frame.Navigate(typeof(LoginPage));
             }
