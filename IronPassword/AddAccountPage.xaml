@@ -58,13 +58,13 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Add Account" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30"></TextBlock>
-            <TextBlock Text="Service: " Grid.Row="1" FontSize="30" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
-            <TextBlock Text="Username: " Grid.Row="2" FontSize="30" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
-            <TextBlock Text="Password: " Grid.Row="3" FontSize="30" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
+            <TextBlock Text="Service: " Grid.Row="1" FontSize="32" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
+            <TextBlock Text="Username: " Grid.Row="2" FontSize="32" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
+            <TextBlock Text="Password: " Grid.Row="3" FontSize="32" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"></TextBlock>
 
-            <TextBox x:Name="serviceTextBox" PlaceholderText="Facebook/Twitter/Google/etc" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" FontSize="30" Margin="10,0,200,0"></TextBox>
-            <TextBox x:Name="usernameTextBox" PlaceholderText=" " Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" FontSize="30" Margin="10,0,200,0"></TextBox>
-            <TextBox x:Name="passwordTextBox" PlaceholderText=" " Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" FontSize="30" Margin="10,0,200,0" TextChanged="passwordTextBox_TextChanged"></TextBox>
+            <TextBox x:Name="serviceTextBox" PlaceholderText="Facebook/Twitter/Google/etc" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" FontSize="32" Margin="10,0,200,0"></TextBox>
+            <TextBox x:Name="usernameTextBox" PlaceholderText=" " Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" FontSize="32" Margin="10,0,200,0"></TextBox>
+            <TextBox x:Name="passwordTextBox" PlaceholderText=" " Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" FontSize="32" Margin="10,0,200,0" TextChanged="passwordTextBox_TextChanged"></TextBox>
 
             <Button x:Name="generatePasswordButton" Grid.Column="1" Grid.Row="4" FontSize="30" 
                     VerticalAlignment="Center" Margin="10,10,350,0" Click="generatePasswordButton_Click" HorizontalAlignment="Stretch">Generate Password</Button>
