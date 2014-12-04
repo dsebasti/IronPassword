@@ -131,7 +131,7 @@ namespace IronPassword
             AccountManager.Accounts.Insert(index, account);
             AccountManager.safe.EditAccount(account);
 
-            this.Frame.Navigate(typeof(ViewSingleAccountPage), account);
+            this.Frame.GoBack();
         }
 
         private void generatePasswordButton_Click(object sender, RoutedEventArgs e)
