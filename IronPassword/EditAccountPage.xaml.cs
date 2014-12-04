@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -24,12 +22,13 @@ namespace IronPassword
     /// <summary>
     /// A basic page that provides characteristics common to most applications.
     /// </summary>
-    public sealed partial class ViewSingleAccountPage : Page
+    public sealed partial class EditAccountPage : Page
     {
 
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
         private Account account;
+        private int passwordScore;
 
         /// <summary>
         /// This can be changed to a strongly typed view model.
@@ -49,7 +48,7 @@ namespace IronPassword
         }
 
 
-        public ViewSingleAccountPage()
+        public EditAccountPage()
         {
             this.InitializeComponent();
             this.navigationHelper = new NavigationHelper(this);
@@ -71,18 +70,9 @@ namespace IronPassword
         private void navigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             account = (Account)e.NavigationParameter;
-
-            accountNameTextBlock.Text = "Account: " + account.AccountName;
-            usernameTextBlock.Text = "Username: " + account.Username;
-
-            string blank = "";
-
-            for (uint i = 0; i < account.Password.Length;  i++)
-            {
-                blank += "*";
-            }
-            
-            passwordTextBlock.Text = "Password: " + blank;
+            serviceTextBox.PlaceholderText = account.AccountName;
+            usernameTextBox.PlaceholderText = account.Username;
+            passwordTextBox.PlaceholderText = account.Password;
         }
 
         /// <summary>
@@ -120,36 +110,49 @@ namespace IronPassword
 
         #endregion
 
-        private void editAccountAppBarButton_Click(object sender, RoutedEventArgs e)
+        private void editAccountButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(EditAccountPage), account);
-        }
+            int index = AccountManager.Accounts.IndexOf(account);
+            AccountManager.Accounts.RemoveAt(index);
 
-        private async void deleteAccountAppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageDialog msg = new MessageDialog("Delete?", "Are you sure you want to delete this account?");
-            msg.Commands.Add(new UICommand("Yes", new UICommandInvokedHandler(this.CommandInvokedHandler)));
-            msg.Commands.Add(new UICommand("No", new UICommandInvokedHandler(this.CommandInvokedHandler)));
-
-            msg.DefaultCommandIndex = 0;
-            msg.CancelCommandIndex = 1;
-
-            await msg.ShowAsync();
-        }
-
-        private void aboutAppBarButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Frame.Navigate(typeof(AboutPage));
-        }
-
-        private void CommandInvokedHandler(IUICommand command)
-        {
-            if(command.Label == "Yes")
+            if (serviceTextBox.Text != "" && serviceTextBox.Text != " ")
             {
-                AccountManager.safe.DeleteAccount(account);
-                AccountManager.Accounts.Remove(account);
-                this.Frame.Navigate(typeof(ViewAccountsPage));
+                account.AccountName = serviceTextBox.Text;
             }
+            if (usernameTextBox.Text != "" && usernameTextBox.Text != " ")
+            {
+                account.Username = usernameTextBox.Text;
+            }
+            if (passwordTextBox.Text != "" && passwordTextBox.Text != " ")
+            {
+                account.Password = passwordTextBox.Text;
+            }
+
+            AccountManager.Accounts.Insert(index, account);
+            AccountManager.safe.EditAccount(account);
+
+            this.Frame.Navigate(typeof(ViewSingleAccountPage), account);
+        }
+
+        private void generatePasswordButton_Click(object sender, RoutedEventArgs e)
+        {
+            passwordTextBox.Text = PasswordGenerator.Generate();
+        }
+
+        private void passwordTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string password = passwordTextBox.Text;
+
+            int score = PasswordGenerator.CheckPasswordStrength(password);
+
+            if (score <= (int)PasswordGenerator.PasswordScore.Weak)
+                passwordTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Red);
+            if (score == (int)PasswordGenerator.PasswordScore.Medium)
+                passwordTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
+            if (score >= (int)PasswordGenerator.PasswordScore.Strong)
+                passwordTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Green);
+
+            passwordScore = score;
         }
     }
 }

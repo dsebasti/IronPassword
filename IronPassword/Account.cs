@@ -18,16 +18,7 @@ namespace IronPassword
         public Account()
         {
             this.CreationTime = DateTime.Now;
-            this.ID = AccountManager.NextID;
-
-            if(AccountManager.Accounts.Count == 0)
-            {
-                this.ID = 1;
-            }
-            else
-            {
-                this.ID = AccountManager.NextID;
-            }
+            this.ID = AccountManager.safe.getNextID();
         }
     }
 }

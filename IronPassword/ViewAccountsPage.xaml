@@ -8,7 +8,7 @@
     xmlns:common="using:IronPassword.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" Loaded="pageRoot_Loaded">
+    mc:Ignorable="d">
 
     <!--
         This grid acts as a root panel for the page that defines two rows:
@@ -37,16 +37,16 @@
             Padding="10,10,10,10"
             SelectionMode="None"
             IsSwipeEnabled="false"
-            ItemsSource="{Binding}">
+            ItemsSource="{Binding}"
+            ItemClick="itemGridView_ItemClick"
+            IsItemClickEnabled="True">
             <GridView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Width="200" Height="100" Tapped="AccountItem_Tapped" Background="#33FFFFFF">
-                        <TextBlock Text="" FontSize="32" Margin="8"/>
+                    <StackPanel Width="200" Height="100" Background="#33FFFFFF">
+                        <TextBlock Text="{Binding AccountName}" FontSize="32" Margin="8"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
-            <ListBox Height="100" Width="120">
-            </ListBox>
         </GridView>
 
         <!-- Back button and page title -->

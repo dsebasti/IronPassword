@@ -54,12 +54,23 @@ namespace IronPassword
             JsonArray jsonArray = json.GetObject().GetNamedArray("accounts");
             uint size = (uint)jsonArray.Count;
 
-            double nextID = jsonArray.GetNumberAt(size - 1) + 1;
+            int nextID;
 
-            return (int)nextID;
+            if(size == 0)
+            {
+                nextID = 1;
+            }
+            else
+            {
+                uint last = size - 1;
+                JsonObject jsonObject = jsonArray.GetObjectAt(last);
+                nextID = (int)jsonObject.GetNamedNumber("id") + 1;
+            }
+
+            return nextID;
         }
 
-        public async void AddAccount(Account account)
+        public void AddAccount(Account account)
         {
             JsonObject jsonObject = new JsonObject();
             jsonObject["id"] = JsonValue.CreateNumberValue(account.ID);
@@ -73,6 +84,66 @@ namespace IronPassword
             JsonArray jsonArray = json.GetObject().GetNamedArray("accounts");
             jsonArray.Add(jsonObject);
 
+            WriteToFile();
+        }
+
+        public void DeleteAccount(Account account)
+        {
+            JsonArray jsonArray = json.GetObject().GetNamedArray("accounts");
+
+            bool accountDeleted = false;
+
+            for (uint i = 0; i < jsonArray.Count; i++)
+            {
+                JsonObject jsonObject = jsonArray.GetObjectAt(i);
+
+                if (!accountDeleted)
+                {
+                    if ((int)jsonObject.GetNamedNumber("id") == account.ID)
+                    {
+                        jsonArray.RemoveAt((int)i);
+                        accountDeleted = true;
+                    }
+                }
+                else
+                {
+                    jsonObject["id"] = JsonValue.CreateNumberValue(jsonObject.GetNamedNumber("id") - 1);
+                    jsonArray.RemoveAt((int)i);
+                    jsonArray.Insert((int)i, jsonObject);
+                }
+            }
+
+            WriteToFile();
+        }
+
+        public void EditAccount(Account account)
+        {
+            JsonArray jsonArray = json.GetObject().GetNamedArray("accounts");
+
+            for(uint i = 0; i < jsonArray.Count; i++)
+            {
+                JsonObject oldJsonObject = jsonArray.GetObjectAt(i);
+
+                if((int)oldJsonObject.GetNamedNumber("id") == account.ID)
+                {
+                    jsonArray.RemoveAt((int)i);
+
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject["id"] = JsonValue.CreateNumberValue(account.ID);
+                    jsonObject["name"] = JsonValue.CreateStringValue(account.AccountName);
+                    jsonObject["username"] = JsonValue.CreateStringValue(account.Username);
+                    jsonObject["password"] = JsonValue.CreateStringValue(account.Password);
+
+                    string datetime = Convert.ToString(account.CreationTime);
+                    jsonObject["datetime"] = JsonValue.CreateStringValue(datetime);
+
+                    jsonArray.Insert((int)i, jsonObject);
+                }
+            }
+        }
+
+        public async void WriteToFile()
+        {
             string text = json.Stringify();
 
             try

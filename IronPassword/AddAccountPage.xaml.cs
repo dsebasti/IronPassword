@@ -33,16 +33,6 @@ namespace IronPassword
 
     public sealed partial class AddAccountPage : Page
     {
-        public enum PasswordScore
-        {
-            Blank = 0,
-            VeryWeak = 1,
-            Weak = 2,
-            Medium = 3,
-            Strong = 4,
-            VeryStrong = 5
-        }
-
         private int passwordScore;
 
         private NavigationHelper navigationHelper;
@@ -137,21 +127,14 @@ namespace IronPassword
 
         private void generatePasswordButton_Click(object sender, RoutedEventArgs e)
         {
-            // http://stackoverflow.com/questions/14582008/what-cryptographically-secure-options-are-there-for-creating-random-numbers-in-w
-            
-            uint length = 12;
-
-            IBuffer randomBuffer = CryptographicBuffer.GenerateRandom(length);
-            string randomString = CryptographicBuffer.EncodeToBase64String(randomBuffer);
-
-            passwordTextBox.Text = randomString;
+            passwordTextBox.Text = PasswordGenerator.Generate();
         }
 
         private async void addAccountButton_Click(object sender, RoutedEventArgs e)
         {
             Account account;
 
-            if (passwordScore >= (int)PasswordScore.Medium)
+            if (passwordScore >= (int)PasswordGenerator.PasswordScore.Medium)
             {
                 account = new Account();
                 account.AccountName = serviceTextBox.Text;
@@ -172,27 +155,15 @@ namespace IronPassword
 
         private void passwordTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            int score = 1;
-
             string password = passwordTextBox.Text;
 
-            if (password.Length >= 8)
-                score++;
-            if (password.Length >= 12)
-                score++;
-            if (Regex.Match(password, @"[0-9]+(\.[0-9][0-9]?)?", RegexOptions.ECMAScript).Success)
-                score++;
-            if (Regex.Match(password, @"^(?=.*[a-z])(?=.*[A-Z]).+$", RegexOptions.ECMAScript).Success &&
-              Regex.Match(password, @"/[A-Z]/", RegexOptions.ECMAScript).Success)
-                score++;
-            if (Regex.Match(password, @"[!,@,#,$,%,^,&,*,?,_,~,-,£,(,)]", RegexOptions.ECMAScript).Success)
-                score++;
+            int score = PasswordGenerator.CheckPasswordStrength(password);
 
-            if (score <= (int)PasswordScore.Weak)
+            if (score <= (int)PasswordGenerator.PasswordScore.Weak)
                 passwordTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Red);
-            if (score == (int)PasswordScore.Medium)
+            if (score == (int)PasswordGenerator.PasswordScore.Medium)
                 passwordTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
-            if (score >= (int)PasswordScore.Strong)
+            if (score >= (int)PasswordGenerator.PasswordScore.Strong)
                 passwordTextBox.BorderBrush = new SolidColorBrush(Windows.UI.Colors.Green);
 
             passwordScore = score;

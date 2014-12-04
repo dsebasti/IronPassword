@@ -76,24 +76,27 @@ namespace IronPassword
             //    this.itemGridView.ItemsSource = manager.Accounts;
             //}
 
-            JsonArray jsonArray = AccountManager.safe.json.GetObject().GetNamedArray("accounts");
-
-            for (uint i = 0; i < jsonArray.Count; i++)
+            if(AccountManager.Accounts.Count == 0)
             {
-                JsonObject jsonObject = jsonArray.GetObjectAt(i);
+                JsonArray jsonArray = AccountManager.safe.json.GetObject().GetNamedArray("accounts");
 
-                Account account = new Account();
-                account.ID = (int)jsonObject.GetNamedNumber("id");
-                account.AccountName = jsonObject.GetNamedString("name");
-                account.Username = jsonObject.GetNamedString("username");
-                account.Password = jsonObject.GetNamedString("password");
+                for (uint i = 0; i < jsonArray.Count; i++)
+                {
+                    JsonObject jsonObject = jsonArray.GetObjectAt(i);
 
-                string datetime = jsonObject.GetNamedString("datetime");
-                account.CreationTime = Convert.ToDateTime(datetime);
+                    Account account = new Account();
+                    account.ID = (int)jsonObject.GetNamedNumber("id");
+                    account.AccountName = jsonObject.GetNamedString("name");
+                    account.Username = jsonObject.GetNamedString("username");
+                    account.Password = jsonObject.GetNamedString("password");
 
-                AccountManager.Accounts.Add(account);
+                    string datetime = jsonObject.GetNamedString("datetime");
+                    account.CreationTime = Convert.ToDateTime(datetime);
+
+                    AccountManager.Accounts.Add(account);
+                }
             }
-
+            
             this.itemGridView.ItemsSource = AccountManager.Accounts;
             this.itemGridView.InvalidateArrange();
         }
@@ -130,11 +133,6 @@ namespace IronPassword
 
         #endregion
 
-        private void AccountItem_Tapped(object sender, TappedRoutedEventArgs e)
-        {
-            //Debug.WriteLine(manager.Accounts[0].Resource);
-        }
-
         private void addAccountAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(AddAccountPage));
@@ -145,9 +143,11 @@ namespace IronPassword
             this.Frame.Navigate(typeof(AboutPage));
         }
 
-        private void pageRoot_Loaded(object sender, RoutedEventArgs e)
+        private void itemGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-           
+            var account = e.ClickedItem as Account;
+
+            this.Frame.Navigate(typeof(ViewSingleAccountPage), account);
         }
     }
 }
